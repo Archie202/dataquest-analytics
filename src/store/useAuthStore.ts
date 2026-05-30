@@ -119,25 +119,6 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
       },
     })
 
-    if (data.user && !error) {
-      const { error: insertError } = await supabase.from("profiles").upsert({
-        id: data.user.id,
-        email,
-        username,
-        full_name: username,
-        xp: 0,
-        level: 1,
-        streak_days: 0,
-        analytics_coins: 0,
-        lessons_completed: 0,
-        badges: [],
-      }, { onConflict: 'id', ignoreDuplicates: true })
-
-      if (insertError) {
-        return { error: insertError.message }
-      }
-    }
-
     return { error: error?.message ?? null }
   },
 
