@@ -35,18 +35,20 @@ create trigger set_updated_at
   for each row
   execute function public.handle_updated_at();
 
--- Auto-create profile on user signup
+-- Auto-create profile on user signup (with error handling)
 create or replace function public.handle_new_user()
 returns trigger as $$
 begin
   insert into public.profiles (id, email, username, full_name, avatar_url)
   values (
     new.id,
-    new.email,
-    coalesce(new.raw_user_meta_data ->> 'username', split_part(new.email, '@', 1)),
+    coalesce(new.email, ''),
+    coalesce(new.raw_user_meta_data ->> 'username', coalesce(new.email, ''), 'user'),
     coalesce(new.raw_user_meta_data ->> 'full_name', ''),
     coalesce(new.raw_user_meta_data ->> 'avatar_url', '')
   );
+  return new;
+exception when others then
   return new;
 end;
 $$ language plpgsql security definer;
