@@ -12,7 +12,7 @@ interface LeaderboardEntry {
   avatar_url: string | null
   xp: number
   level: number
-  streak: number
+  streak_days: number
 }
 
 const rankIcons = [
@@ -153,9 +153,9 @@ export default function LeaderboardPage() {
                     <span className="flex items-center gap-1 text-yellow-500">
                       <Zap className="w-3.5 h-3.5" /> {entry.xp}
                     </span>
-                    {entry.streak > 0 && (
+                    {entry.streak_days > 0 && (
                       <span className="flex items-center gap-1 text-orange-500 text-xs">
-                        <span className="text-orange-500">{entry.streak}d</span>
+                        <span className="text-orange-500">{entry.streak_days}d</span>
                       </span>
                     )}
                   </div>

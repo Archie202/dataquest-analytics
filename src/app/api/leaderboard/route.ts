@@ -10,7 +10,7 @@ export async function GET() {
 
   const { data: profiles } = await supabase
     .from("profiles")
-    .select("id, username, avatar_url, xp, level, streak")
+    .select("id, username, avatar_url, xp, level, streak_days")
     .order("xp", { ascending: false })
     .limit(100)
 

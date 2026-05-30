@@ -23,7 +23,7 @@ export async function GET(request: Request) {
           .single()
 
         if (!existingProfile) {
-          await supabase.from("profiles").insert({
+          await supabase.from("profiles").upsert({
             id: user.id,
             email: user.email,
             username: user.user_metadata?.full_name ?? user.email?.split("@")[0] ?? "User",
@@ -35,7 +35,7 @@ export async function GET(request: Request) {
             analytics_coins: 0,
             lessons_completed: 0,
             badges: [],
-          })
+          }, { onConflict: 'id', ignoreDuplicates: true })
         }
       }
 
